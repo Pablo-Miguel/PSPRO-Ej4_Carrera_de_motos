@@ -4,6 +4,7 @@
  */
 package servidor.pspro.ej4_carrera_de_motos.vista;
 
+import java.util.ArrayList;
 import servidor.pspro.ej4_carrera_de_motos.threads.MotoThread;
 
 /**
@@ -14,7 +15,7 @@ public class PanelInicial extends javax.swing.JPanel {
     
     private Ventana ventana;
     private MotoThread moto1, moto2;
-    private Thread thr1, thr2;
+    private ArrayList<MotoThread> podio;
     
     /**
      * Creates new form PanelInicial
@@ -22,10 +23,13 @@ public class PanelInicial extends javax.swing.JPanel {
     public PanelInicial(Ventana ventana) {
         initComponents();
         this.ventana = ventana;
-        moto1 = new MotoThread("moto1", progressMoto1, 20, 1);
-        thr1 = new Thread(moto1);
-        moto2 = new MotoThread("moto2", progressMoto2, 20, 3);
-        thr2 = new Thread(moto2);
+        podio = new ArrayList<MotoThread>();
+        start();
+    }
+    
+    private void start(){
+        moto1 = new MotoThread("moto1", progressMoto1, lblLapsMoto1, lblStateMoto1, 40, 1, 2, podio);
+        moto2 = new MotoThread("moto2", progressMoto2, lblLapsMoto2, lblStateMoto2, 40, 1, 2, podio);
     }
 
     /**
@@ -41,6 +45,14 @@ public class PanelInicial extends javax.swing.JPanel {
         progressMoto2 = new javax.swing.JProgressBar();
         btnStart = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblStateMoto1 = new javax.swing.JLabel();
+        lblStateMoto2 = new javax.swing.JLabel();
+        btnRestart = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        lblLapsMoto1 = new javax.swing.JLabel();
+        lblLapsMoto2 = new javax.swing.JLabel();
 
         progressMoto1.setStringPainted(true);
         progressMoto1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -56,6 +68,7 @@ public class PanelInicial extends javax.swing.JPanel {
             }
         });
 
+        btnStart.setBackground(new java.awt.Color(0, 255, 153));
         btnStart.setText("Start");
         btnStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,6 +76,7 @@ public class PanelInicial extends javax.swing.JPanel {
             }
         });
 
+        btnStop.setBackground(new java.awt.Color(255, 255, 102));
         btnStop.setText("Stop");
         btnStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,70 +84,168 @@ public class PanelInicial extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Motorbike1:");
+
+        jLabel2.setText("Motorbike2:");
+
+        lblStateMoto1.setText("Thread State");
+
+        lblStateMoto2.setText("Thread State");
+
+        btnRestart.setBackground(new java.awt.Color(255, 153, 153));
+        btnRestart.setText("Restart");
+        btnRestart.setEnabled(false);
+        btnRestart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestartActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(153, 153, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("MOTOS GP");
+
+        lblLapsMoto1.setText("Race Laps");
+
+        lblLapsMoto2.setText("Race Laps");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(progressMoto2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(progressMoto1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnStart)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStop)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblLapsMoto2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblStateMoto2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblLapsMoto1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblStateMoto1))
+                            .addComponent(progressMoto1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(progressMoto2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnStart)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnStop)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                                .addComponent(btnRestart)))))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblLapsMoto1)
+                    .addComponent(lblStateMoto1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressMoto1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lblLapsMoto2)
+                    .addComponent(lblStateMoto2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressMoto2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStart)
-                    .addComponent(btnStop))
-                .addGap(24, 24, 24)
-                .addComponent(progressMoto1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(progressMoto2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(155, Short.MAX_VALUE))
+                    .addComponent(btnStop)
+                    .addComponent(btnRestart))
+                .addGap(48, 48, 48))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        thr1.start();
-        thr2.start();
+        moto1.start();
+        moto2.start();
         btnStart.setEnabled(false);
+        btnRestart.setEnabled(true);
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void progressMoto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto1MouseClicked
-        moto1.setStop(!moto1.isStop());
+        if(!btnStart.isEnabled()){
+            moto1.setStop(!moto1.isStop());
+            if(moto1.isStop()) {
+                moto1.suspend();
+                lblStateMoto1.setText("Stopped");
+            } else {
+                moto1.resume();
+                lblStateMoto1.setText("Running");
+            }
+        }
     }//GEN-LAST:event_progressMoto1MouseClicked
 
     private void progressMoto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto2MouseClicked
-        moto2.setStop(!moto2.isStop());
+        if(!btnStart.isEnabled()){
+            moto2.setStop(!moto2.isStop());
+            if(moto2.isStop()) {
+                moto2.suspend();
+                lblStateMoto2.setText("Stopped");
+            } else {
+                moto2.resume();
+                lblStateMoto2.setText("Running");
+            }
+        }
     }//GEN-LAST:event_progressMoto2MouseClicked
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-        if(btnStop.getText().equals("Stop")){
+        if(btnStop.getText().equals("Stop") && !btnStart.isEnabled()){
             moto1.setStop(true);
             moto2.setStop(true);
+            moto1.suspend();
+            moto2.suspend();
+            lblStateMoto1.setText("Stopped");
+            lblStateMoto2.setText("Stopped");
             btnStop.setText("Continue");
-        } else if(btnStop.getText().equals("Continue")) {
+        } else if(btnStop.getText().equals("Continue") && !btnStart.isEnabled()) {
             moto1.setStop(false);
             moto2.setStop(false);
+            moto1.resume();
+            moto2.resume();
+            lblStateMoto1.setText("Running");
+            lblStateMoto2.setText("Running");
             btnStop.setText("Stop");
         }
         
     }//GEN-LAST:event_btnStopActionPerformed
 
+    private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
+        moto1.suspend();
+        moto2.suspend();
+        progressMoto1.setValue(0);
+        progressMoto2.setValue(0);
+        podio.clear();
+        start();
+        btnRestart.setEnabled(false);
+        btnStart.setEnabled(true);
+    }//GEN-LAST:event_btnRestartActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRestart;
     private javax.swing.JButton btnStart;
     private javax.swing.JButton btnStop;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lblLapsMoto1;
+    private javax.swing.JLabel lblLapsMoto2;
+    private javax.swing.JLabel lblStateMoto1;
+    private javax.swing.JLabel lblStateMoto2;
     private javax.swing.JProgressBar progressMoto1;
     private javax.swing.JProgressBar progressMoto2;
     // End of variables declaration//GEN-END:variables
