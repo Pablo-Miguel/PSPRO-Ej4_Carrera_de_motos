@@ -177,45 +177,39 @@ public class PanelInicial extends javax.swing.JPanel {
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void progressMoto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto1MouseClicked
-        if(!btnStart.isEnabled()){
-            moto1.setStop(!moto1.isStop());
-            if(moto1.isStop()) {
-                moto1.suspend();
-                lblStateMoto1.setText("Stopped");
-            } else {
-                moto1.resume();
-                lblStateMoto1.setText("Running");
-            }
-        }
+//        if(!btnStart.isEnabled()){
+//            if(moto1.isStop()) {
+//                moto1.suspender();
+//                lblStateMoto1.setText("Stopped");
+//            } else {
+//                moto1.reanudar();
+//                lblStateMoto1.setText("Running");
+//            }
+//        }
     }//GEN-LAST:event_progressMoto1MouseClicked
 
     private void progressMoto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto2MouseClicked
-        if(!btnStart.isEnabled()){
-            moto2.setStop(!moto2.isStop());
-            if(moto2.isStop()) {
-                moto2.suspend();
-                lblStateMoto2.setText("Stopped");
-            } else {
-                moto2.resume();
-                lblStateMoto2.setText("Running");
-            }
-        }
+//        if(!btnStart.isEnabled()){
+//            if(moto2.isStop()) {
+//                moto2.suspender();
+//                lblStateMoto2.setText("Stopped");
+//            } else {
+//                moto2.reanudar();
+//                lblStateMoto2.setText("Running");
+//            }
+//        }
     }//GEN-LAST:event_progressMoto2MouseClicked
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
         if(btnStop.getText().equals("Stop") && !btnStart.isEnabled()){
-            moto1.setStop(true);
-            moto2.setStop(true);
-            moto1.suspend();
-            moto2.suspend();
+            moto1.suspender();
+            moto2.suspender();
             lblStateMoto1.setText("Stopped");
             lblStateMoto2.setText("Stopped");
             btnStop.setText("Continue");
         } else if(btnStop.getText().equals("Continue") && !btnStart.isEnabled()) {
-            moto1.setStop(false);
-            moto2.setStop(false);
-            moto1.resume();
-            moto2.resume();
+            moto1.reanudar();
+            moto2.reanudar();
             lblStateMoto1.setText("Running");
             lblStateMoto2.setText("Running");
             btnStop.setText("Stop");
@@ -224,8 +218,8 @@ public class PanelInicial extends javax.swing.JPanel {
     }//GEN-LAST:event_btnStopActionPerformed
 
     private void btnRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestartActionPerformed
-        moto1.suspend();
-        moto2.suspend();
+        moto1.suspender();
+        moto2.suspender();
         progressMoto1.setValue(0);
         progressMoto2.setValue(0);
         podio.clear();

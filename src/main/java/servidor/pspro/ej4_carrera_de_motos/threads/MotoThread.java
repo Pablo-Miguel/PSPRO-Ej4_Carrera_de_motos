@@ -47,55 +47,19 @@ public class MotoThread extends Thread {
         this.stop = stop;
     }
     
+    public void suspender(){
+        this.stop = true;
+    }
+    
+    public synchronized void reanudar() {
+        this.stop = false;
+        notify();
+    }
+    
     int lap = 0;
     @Override
     public void run() {
-//        motoRun();
-        
-//        while(progress < progressBar.getMaximum()){
-//            if(!stop){
-//                
-//                try {
-//
-//                    progress += rnd.nextInt(5) + 1; //[1, 5]
-//
-//                    progressBar.setValue(progress);
-//
-//                    Thread.sleep(tic);
-//
-//                } catch (InterruptedException ex) { }
-//            }
-//        }
-        
-        lblState.setText("Running");
-        while(lap < laps && !isInterrupted()){
-            int progress = 0;
-            while(progress < progressBar.getMaximum() && !isInterrupted()){
-                try {
-
-                    progress += rnd.nextInt(5) + 1; //[1, 5]
-
-                    progressBar.setValue(progress);
-
-                    Thread.sleep(tic);
-                    
-                    if(isInterrupted()){
-                        System.out.println(isInterrupted());
-                    }
-
-                } catch (InterruptedException ex) { }
-            }
-
-            lap++;
-            lblLoops.setText(lap + "/" + laps + " Laps");
-            
-            if(isInterrupted()){
-                System.out.println(isInterrupted());
-            }
-        }
-        
-        setPodium();
-        
+        motoRun();
     }
     
     private synchronized void setPodium(){
@@ -108,24 +72,33 @@ public class MotoThread extends Thread {
     }
     
     private synchronized void motoRun(){
-        int progress = 0;
-        while(progress < progressBar.getMaximum()){
-            while(stop){
+        lblState.setText("Running");
+        while(lap < laps){
+            int progress = 0;
+            while(progress < progressBar.getMaximum()){
+                System.out.println(stop);
+                if(stop){
+                    try {
+                        wait();
+                    } catch (InterruptedException ex) { }
+                }
+                
                 try {
-                    wait();
+
+                    progress += rnd.nextInt(5) + 1; //[1, 5]
+
+                    progressBar.setValue(progress);
+
+                    Thread.sleep(tic);
+
                 } catch (InterruptedException ex) { }
             }
-            try {
 
-                progress += rnd.nextInt(5) + 1; //[1, 5]
-
-                progressBar.setValue(progress);
-
-                Thread.sleep(tic);
-                
-                notify();
-
-            } catch (InterruptedException ex) { }
+            lap++;
+            lblLoops.setText(lap + "/" + laps + " Laps");
+            
+            setPodium();
+            
         }
     }
     
