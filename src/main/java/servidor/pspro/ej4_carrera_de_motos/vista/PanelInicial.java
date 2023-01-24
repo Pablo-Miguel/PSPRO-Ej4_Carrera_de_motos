@@ -28,8 +28,24 @@ public class PanelInicial extends javax.swing.JPanel {
     }
     
     private void start(){
-        moto1 = new MotoThread("moto1", progressMoto1, lblLapsMoto1, lblStateMoto1, 40, 1, 2, podio);
-        moto2 = new MotoThread("moto2", progressMoto2, lblLapsMoto2, lblStateMoto2, 40, 1, 2, podio);
+        moto1 = new MotoThread(
+                "moto1", 
+                progressMoto1, 
+                lblLapsMoto1, 
+                lblStateMoto1, 
+                40, 
+                1, 
+                2, 
+                podio);
+        moto2 = new MotoThread(
+                "moto2", 
+                progressMoto2, 
+                lblLapsMoto2, 
+                lblStateMoto2, 
+                40, 
+                1, 
+                2, 
+                podio);
     }
 
     /**
@@ -177,41 +193,33 @@ public class PanelInicial extends javax.swing.JPanel {
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void progressMoto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto1MouseClicked
-//        if(!btnStart.isEnabled()){
-//            if(moto1.isStop()) {
-//                moto1.suspender();
-//                lblStateMoto1.setText("Stopped");
-//            } else {
-//                moto1.reanudar();
-//                lblStateMoto1.setText("Running");
-//            }
-//        }
+        if(!btnStart.isEnabled()){
+            if(!moto1.isStop()) {
+                moto1.suspender();
+            } else {
+                moto1.reanudar();
+            }
+        }
     }//GEN-LAST:event_progressMoto1MouseClicked
 
     private void progressMoto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_progressMoto2MouseClicked
-//        if(!btnStart.isEnabled()){
-//            if(moto2.isStop()) {
-//                moto2.suspender();
-//                lblStateMoto2.setText("Stopped");
-//            } else {
-//                moto2.reanudar();
-//                lblStateMoto2.setText("Running");
-//            }
-//        }
+        if(!btnStart.isEnabled()){
+            if(!moto2.isStop()) {
+                moto2.suspender();
+            } else {
+                moto2.reanudar();
+            }
+        }
     }//GEN-LAST:event_progressMoto2MouseClicked
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
         if(btnStop.getText().equals("Stop") && !btnStart.isEnabled()){
             moto1.suspender();
             moto2.suspender();
-            lblStateMoto1.setText("Stopped");
-            lblStateMoto2.setText("Stopped");
             btnStop.setText("Continue");
         } else if(btnStop.getText().equals("Continue") && !btnStart.isEnabled()) {
             moto1.reanudar();
             moto2.reanudar();
-            lblStateMoto1.setText("Running");
-            lblStateMoto2.setText("Running");
             btnStop.setText("Stop");
         }
         
